@@ -1,0 +1,48 @@
+{% extends '__base.html' %}
+{% load static %}
+{% block title %}Список событий{% endblock %}
+{% block page_title %}
+    <h4>События</h4>
+{% endblock %}
+{% block options %}
+    {% include 'inc/_options.html' %}
+{% endblock %}
+{% block pagination %}
+    {% include 'inc/_pagination.html' %}
+{% endblock %}
+{% block content %}
+    <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 row-cols-xxl-4 g-4">
+        {% for event in events %}
+            <div class="col">
+                <div class="card h-100">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">{{ event.title }}</h5>
+                        {% if event.is_private %}
+                            <span data-test="is_private" class="badge bg-dark">Private</span>
+                        {% endif %}
+                    </div>
+                    <div class="card-body">
+                        <h3>{{ event.display_enroll_count }} из {{ event.participants_number }}</h3>
+                        <p>участников</p>
+                        <ul class="py-2">
+                            {% for feature in event.features.all %}
+                                <li>{{ feature.title }}</li>
+                            {% endfor %}
+                        </ul>
+                        <p>
+                            дата: <strong data-test="date_start">
+                            {{ event.date_start|date:'d.m.Y'}} в {{ event.date_start|time:'H:i'}}
+                        </strong>
+                        </p>
+                    </div>
+                    <div class="card-footer">
+                        <a href="{{ event.get_absolute_url }}" class="btn btn-success">Смотреть</a>
+                        <a href="#" class="btn btn-outline-primary" title="Изменить">
+                            <i class="bi bi-pencil-square"></i>Изменить
+                        </a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
