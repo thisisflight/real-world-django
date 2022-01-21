@@ -33,13 +33,15 @@
                                 </strong>
                                 </p>
                                 <div class="button-list mt-5 mb-5 d-flex">
-                                    <form action="#" method="post" class="me-2">
+                                    <form action="{% url 'events:event_enroll' %}" method="post" class="me-2">
                                         {% if signed_participants == all_participants %}
                                             <button data-test="enroll"
                                                     type="button"
                                                     class="btn btn-success"
                                                     disabled="">Мест нет</button>
                                         {% else %}
+                                            {% csrf_token %}
+                                            {{ enroll_form }}
                                             <button data-test="enroll"
                                                     type="submit"
                                                     class="btn btn-success">
@@ -47,7 +49,7 @@
                                             </button>
                                         {% endif %}
                                     </form>
-                                    <a href="#" class="btn btn-primary me-2">
+                                    <a href="{{ event.get_update_url }}" class="btn btn-primary me-2">
                                         <i class="bi bi-pencil"></i>Изменить
                                     </a>
                                     <button type="button" class="btn btn-outline-danger"
