@@ -14,6 +14,8 @@ import os.path
 import environ
 from pathlib import Path
 
+from django.urls import reverse_lazy
+
 env = environ.Env()
 environ.Env.read_env()
 
@@ -40,6 +42,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'events.apps.EventsConfig',
+    'accounts.apps.AccountsConfig',
+    'django_cleanup.apps.CleanupConfig',
 ]
 
 MIDDLEWARE = [
@@ -68,6 +72,7 @@ TEMPLATES = [
             ],
             'libraries': {
                 'get_rate_or_zero': 'templatetags.get_rate_or_zero',
+                'get_rate_or_dashes': 'templatetags.get_rate_or_dashes',
             },
         },
     },
@@ -137,3 +142,16 @@ django_heroku.settings(locals())
 MEDIA_URL = '/media/'
 
 MEDIA_ROOT = BASE_DIR / 'media'
+
+LOGIN_REDIRECT_URL = '/'
+
+LOGOUT_REDIRECT_URL = '/'
+
+LOGIN_URL = reverse_lazy('accounts:sign_in')
+
+EMAIL_HOST = 'smtp.yandex.ru'
+EMAIL_PORT = 465
+EMAIL_HOST_USER = env('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
+EMAIL_USE_TLS = False
+EMAIL_USE_SSL = True

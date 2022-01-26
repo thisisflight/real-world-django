@@ -1,0 +1,19 @@
+{% extends "__base.html" %}
+{% block title %}Войти{% endblock %}
+{% block special_content %}
+<div style="display: flex; justify-content: center; align-items: center; height: 85vh">
+<div class="container">
+    <div class="row">
+        <div class="col-md-6" style="margin: 0 auto">
+            <h1>Войти</h1>
+            <hr>
+            <form action="." method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-primary">Войти</button>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+{% endblock %}

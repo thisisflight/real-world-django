@@ -62,9 +62,9 @@ class EventUpdateView(LoginRequiredMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = f'Редактирование события {self.get_object().title}'
-        context['enrolls'] = self.get_object().enrolls.all()
-        context['reviews'] = self.get_object().reviews.all()
+        context['title'] = f'Редактирование события {self.object.title}'
+        context['enrolls'] = self.object.enrolls.all()
+        context['reviews'] = self.object.reviews.all()
         return context
 
 
@@ -139,7 +139,7 @@ def create_review(request):
     elif review_exists:
         data['msg'] = 'Вы уже оценили это событие ранее'
     elif not is_user_authenticated:
-        data['msg'] = 'Отзывы могут оставлять только зарегистированные пользователи'
+        data['msg'] = 'Отзывы могут оставлять только зарегистрированные пользователи'
     data['rate'] = rate
     data['text'] = text
     data['created'] = ''
