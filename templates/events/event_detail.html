@@ -52,10 +52,15 @@
                                     <a href="{{ event.get_update_url }}" class="btn btn-primary me-2">
                                         <i class="bi bi-pencil"></i>Изменить
                                     </a>
-                                    <button type="button" class="btn btn-outline-danger"
-                                            title="Добавить в избранное">
-                                        <i class="bi bi-heart-fill"></i>
-                                    </button>
+                                    <form action="{% url 'events:event_add_to_favorite' %}" method="post">
+                                        {% csrf_token %}
+                                        {{ favorite_form }}
+                                        <button type="submit" {% if in_favorites %} disabled {% endif %}
+                                                class="btn btn-outline-danger"
+                                                title="Добавить в избранное">
+                                            <i class="bi bi-heart-fill"></i>
+                                        </button>
+                                    </form>
                                 </div>
                                 <div class="card text-center col-xl-6 m-b-30 bg-info-rgba border btn-shadow">
                                     <div class="card-header">

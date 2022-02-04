@@ -53,8 +53,9 @@ class Event(models.Model):
 
     @property
     def rate(self):
-        return (round(sum(review.rate for review in self.reviews.all()) / self.reviews.count(), 1)
-                if self.reviews.count() else 0)
+        reviews = self.reviews.all()
+        return (round(sum(review.rate for review in reviews) / len(reviews), 1)
+                if len(reviews) else 0)
 
     @property
     def logo_url(self):
@@ -147,3 +148,11 @@ class Review(models.Model):
         db_table = 'reviews'
         verbose_name = 'Отзыв'
         verbose_name_plural = 'Отзывы'
+
+
+class Favorite(models.Model):
+    user = models.ForeignKey(User, null=True, on_delete=models.CASCADE, related_name='favorites')
+    event = models.ForeignKey(Event, null=True, on_delete=models.CASCADE, related_name='favorites')
+
+    def __str__(self):
+        return f'{self.user.username} - {self.event.title}'

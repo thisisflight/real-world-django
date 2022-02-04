@@ -94,7 +94,7 @@
                                                         {{ enroll.user.last_name }} </td>
                                                     <td data-test="enroll_email">{{ enroll.user.email }}</td>
                                                     <td data-test="enroll_rate">
-                                                        {% get_rate_or_0 event enroll %}
+                                                        {% get_rate_or_0 reviews_rates enroll.user.id %}
                                                     </td>
                                                 </tr>
                                             {% endfor %}

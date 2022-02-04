@@ -1,5 +1,5 @@
 from django import forms
-from .models import Enroll, Event
+from .models import Enroll, Event, Category, Feature, Favorite
 
 
 class EventCreateUpdateForm(forms.ModelForm):
@@ -45,4 +45,55 @@ class EnrollToEventForm(forms.ModelForm):
         cleaned_data = super().clean()
         if Enroll.objects.filter(user=cleaned_data.get('user'), event=cleaned_data.get('event')).exists():
             raise forms.ValidationError(f'Вы уже записаны на это событие')
+        return cleaned_data
+
+
+class EventFilterForm(forms.Form):
+    category = forms.ModelChoiceField(label='Категория',
+                                      queryset=Category.objects.all(),
+                                      required=False)
+    features = forms.ModelMultipleChoiceField(label='Свойства',
+                                              queryset=Feature.objects.all(),
+                                              required=False)
+    date_start = forms.DateTimeField(label='Дата начала',
+                                     widget=forms.DateInput(format="%Y-%m-%d",
+                                                            attrs={'type': 'date'}),
+                                     required=False)
+    date_end = forms.DateTimeField(label='Дата окончания',
+                                   widget=forms.DateInput(format="%Y-%m-%d",
+                                                          attrs={'type': 'date'}),
+                                   required=False)
+    is_private = forms.BooleanField(label='Private',
+                                    widget=forms.CheckboxInput(attrs={'type': 'checkbox',
+                                                                      'class': 'form-check-input'}),
+                                    required=False)
+    is_available = forms.BooleanField(label='Есть места',
+                                      widget=forms.CheckboxInput(attrs={'type': 'checkbox',
+                                                                        'class': 'form-check-input'}),
+                                      required=False)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['category'].widget.attrs.update({'class': 'form-select'})
+        self.fields['features'].widget.attrs.update({'class': 'form-select', 'multiple': True})
+        self.fields['date_start'].widget.attrs.update({'class': 'form-control'})
+        self.fields['date_end'].widget.attrs.update({'class': 'form-control'})
+
+
+class EventAddToFavoriteForm(forms.ModelForm):
+    class Meta:
+        model = Favorite
+        fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields:
+            self.fields[field].widget = forms.HiddenInput()
+
+    def clean(self):
+        cleaned_data = super().clean()
+
+        if Favorite.objects.filter(user=cleaned_data['user'], event=cleaned_data['event']).exists():
+            raise forms.ValidationError(f'Событие уже добавлено в избранное')
+
         return cleaned_data

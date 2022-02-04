@@ -2,13 +2,12 @@
 {% load static %}
 {% block title %}Список событий{% endblock %}
 {% block page_title %}
-    <h4>События</h4>
 {% endblock %}
 {% block options %}
-    {% include 'inc/_options.html' %}
+    {% include 'inc/_options.html' with filter_form=filter_form %}
 {% endblock %}
 {% block pagination %}
-    {% include 'inc/_pagination.html' %}
+    {% include 'inc/_pagination.html' with is_filter_used=is_filter_used query=query %}
 {% endblock %}
 {% block content %}
     <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 row-cols-xxl-4 g-4">

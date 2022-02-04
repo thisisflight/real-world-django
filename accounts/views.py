@@ -61,17 +61,17 @@ class UserProfilePageView(LoginRequiredMixin, UpdateView):
     success_url = reverse_lazy('accounts:profile')
 
     def get_object(self, queryset=None):
-        try:
-            profile = super(UserProfilePageView, self).get_object()
-        except AttributeError:
-            profile = Profile.objects.get(user__username=self.request.user.username)
-        return profile
+        return self.request.user.profile
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         user = self.request.user
-        context['events'] = Event.objects.filter(enrolls__user=user)
-        context['reviews'] = Review.objects.filter(user=user)
+        events = Event.objects.filter(enrolls__user=user)
+        reviews = Review.objects.filter(user=user)
+        reviews_rates = {review.event_id: review.rate for review in reviews}
+        context['events'] = events
+        context['reviews'] = reviews
+        context['reviews_rates'] = reviews_rates
         return context
 
 

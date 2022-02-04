@@ -9,7 +9,7 @@ class MainPageView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['events'] = Event.objects.all().order_by('-pk')[:3]
-        context['reviews'] = Review.objects.all().order_by('-pk')[:3]
+        context['reviews'] = Review.objects.select_related('user').all().order_by('-pk')[:3]
         context['flag'] = True
         context['main'] = True
         return context

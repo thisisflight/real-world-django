@@ -1,3 +1,4 @@
+import debug_toolbar
 from django.conf import settings
 from django.contrib import admin
 from django.urls import path, include
@@ -8,6 +9,11 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('events/', include('events.urls')),
     path('api/events/', include('events.urls_api')),
+    path('mail/', include('mail.urls')),
+    # API
+    path('api/mail/', include('mail.urls_api')),
+    # other
+    path('__debug__/', include(debug_toolbar.urls))
 ]
 
 if settings.DEBUG:

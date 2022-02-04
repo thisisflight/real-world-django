@@ -10,10 +10,10 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 import os.path
-
-import environ
 from pathlib import Path
 
+import django_heroku
+import environ
 from django.urls import reverse_lazy
 
 env = environ.Env()
@@ -41,12 +41,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'debug_toolbar',
     'events.apps.EventsConfig',
     'accounts.apps.AccountsConfig',
+    'mail.apps.MailConfig',
     'django_cleanup.apps.CleanupConfig',
 ]
 
 MIDDLEWARE = [
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -135,18 +138,13 @@ STATICFILES_DIRS = [
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-import django_heroku
-
 django_heroku.settings(locals())
 
 MEDIA_URL = '/media/'
-
 MEDIA_ROOT = BASE_DIR / 'media'
 
 LOGIN_REDIRECT_URL = '/'
-
 LOGOUT_REDIRECT_URL = '/'
-
 LOGIN_URL = reverse_lazy('accounts:sign_in')
 
 EMAIL_HOST = 'smtp.yandex.ru'
@@ -155,3 +153,7 @@ EMAIL_HOST_USER = env('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS = False
 EMAIL_USE_SSL = True
+
+INTERNAL_IPS = [
+    '127.0.0.1',
+]
