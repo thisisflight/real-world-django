@@ -14,7 +14,9 @@ from pathlib import Path
 
 import django_heroku
 import environ
+import sentry_sdk
 from django.urls import reverse_lazy
+from sentry_sdk.integrations.django import DjangoIntegration
 
 env = environ.Env()
 environ.Env.read_env()
@@ -158,3 +160,17 @@ EMAIL_USE_SSL = True
 INTERNAL_IPS = [
     '127.0.0.1',
 ]
+
+sentry_sdk.init(
+    dsn=os.environ.get("DSN_TOKEN"),
+    integrations=[DjangoIntegration()],
+
+    # Set traces_sample_rate to 1.0 to capture 100%
+    # of transactions for performance monitoring.
+    # We recommend adjusting this value in production.
+    traces_sample_rate=1.0,
+
+    # If you wish to associate users to errors (assuming you are using
+    # django.contrib.auth) you may enable sending PII data.
+    send_default_pii=True
+)
