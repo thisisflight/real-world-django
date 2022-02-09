@@ -61,7 +61,7 @@ class EventListView(ListView):
                 queryset = queryset.filter(is_private=True)
             if filter_is_available:
                 queryset = [event for event in queryset if event.places_left]
-                return sorted(queryset, key=lambda event: event.pk, reverse=True)
+            return sorted(queryset, key=lambda event: event.pk, reverse=True)
         return queryset.order_by('-pk')
 
 

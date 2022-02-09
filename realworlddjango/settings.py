@@ -76,6 +76,7 @@ TEMPLATES = [
             'libraries': {
                 'get_rate_or_zero': 'templatetags.get_rate_or_zero',
                 'get_rate_or_dashes': 'templatetags.get_rate_or_dashes',
+                'subtract_values': 'templatetags.subtract_values'
             },
         },
     },

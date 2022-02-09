@@ -4,7 +4,7 @@
 {% block content %}
 
 <!-- Start MAIN_CONTAINER -->
-<div class="rightbar">
+<div class="rightbar" style="margin-left: 120px">
 
     <!-- Start CONTAINER_BAR -->
     <div class="container mt-3">
@@ -70,8 +70,8 @@
     function readySubscribers() {
 
         const urlCreateLetters = "{% url 'api_mail:create_letters' %}"
-        const urlSendLetters = ""
-        const urlGetSubscribers = ""
+        const urlSendLetters = "{% url 'api_mail:send_letters' %}"
+        const urlGetSubscribers = "{% url 'api_mail:get_subscribers' %}"
 
         let btnCreateLetters = document.getElementById('btnCreateLetters')
         if (btnCreateLetters) {

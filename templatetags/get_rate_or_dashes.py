@@ -1,5 +1,4 @@
 from django import template
-from events.models import Review
 
 register = template.Library()
 

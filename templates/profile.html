@@ -1,5 +1,6 @@
 {% extends '__base.html' %}
 {% load static %}
+{% load cache %}
 {% load get_rate_or_dashes %}
 {% block title %}Профиль пользователя {{ user.username }}{% endblock %}
 {% block content %}
@@ -45,17 +46,19 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                {% for event in events %}<tr>
-                                    <th scope="row">{{ forloop.counter }}</th>
-                                    <td>
-                                        <a href="{{ event.get_absolute_url }}" data-test="event">
-                                            {{ event.title }}
-                                        </a>
-                                    </td>
-                                    <td data-test="event_start">{{ event.date_start|date:"d E Y" }}</td>
-                                    <td data-test="event_rate">{% get_rate_or_dashes reviews_rates event.pk %}</td>
-                                </tr>
-                                {% endfor %}
+                                {% cache 300 profile_events %}
+                                    {% for event in events %}<tr>
+                                        <th scope="row">{{ forloop.counter }}</th>
+                                        <td>
+                                            <a href="{{ event.get_absolute_url }}" data-test="event">
+                                                {{ event.title }}
+                                            </a>
+                                        </td>
+                                        <td data-test="event_start">{{ event.date_start|date:"d E Y" }}</td>
+                                        <td data-test="event_rate">{% get_rate_or_dashes reviews_rates event.pk %}</td>
+                                    </tr>
+                                    {% endfor %}
+                                {% endcache %}
                                 </tbody>
                             </table>
                         </div>
@@ -77,20 +80,22 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                {% for review in reviews %}
-                                    <tr>
-                                        <th scope="row">{{ forloop.counter }}</th>
-                                        <td>
-                                            <a href="{{ review.event.get_absolute_url }}" data-test="review_event">
-                                                {{ review.event.title }}
-                                            </a>
-                                        </td>
-                                        <td data-test="review_text">
-                                            {{ review.text }}
-                                        </td>
-                                        <td data-test="review_rate">{{ review.rate }}</td>
-                                    </tr>
-                                {% endfor %}
+                                {% cache 300 profile_reviews %}
+                                    {% for review in reviews %}
+                                        <tr>
+                                            <th scope="row">{{ forloop.counter }}</th>
+                                            <td>
+                                                <a href="{{ review.event.get_absolute_url }}" data-test="review_event">
+                                                    {{ review.event.title }}
+                                                </a>
+                                            </td>
+                                            <td data-test="review_text">
+                                                {{ review.text }}
+                                            </td>
+                                            <td data-test="review_rate">{{ review.rate }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                {% endcache %}
                                 </tbody>
                             </table>
                         </div>

@@ -1,5 +1,6 @@
 {% extends '__base.html' %}
 {% load static %}
+{% load subtract_values %}
 {% block title %}{{ event.title }}{% endblock %}
 {% block page_title %}
     <h4>Событие</h4>
@@ -76,7 +77,7 @@
                                                 осталось мест: мест нет</p>
                                         {% else %}
                                             <p data-test="places_left">
-                                                осталось мест: {{ event.places_left }}
+                                                осталось мест: {% subtract all_participants signed_participants %}
                                             </p>
                                         {% endif %}
                                         <div class="progress" style="height: 5px;">
