@@ -67,7 +67,7 @@ class UserProfilePageView(LoginRequiredMixin, UpdateView):
         context = super().get_context_data(**kwargs)
         user = self.request.user
         events = Event.objects.filter(enrolls__user=user)
-        reviews = Review.objects.filter(user=user)
+        reviews = Review.objects.select_related('event').filter(user=user)
         reviews_rates = {review.event_id: review.rate for review in reviews}
         context['events'] = events
         context['reviews'] = reviews

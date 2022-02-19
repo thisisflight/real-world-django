@@ -8,7 +8,6 @@ urlpatterns = [
     path('accounts/', include('accounts.urls')),
     path('admin/', admin.site.urls),
     path('events/', include('events.urls')),
-    path('api/events/', include('events.urls_api')),
     path('mail/', include('mail.urls')),
     # API
     path('api/mail/', include('mail.urls_api')),

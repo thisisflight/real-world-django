@@ -1,5 +1,5 @@
 from django import forms
-from .models import Enroll, Event, Category, Feature, Favorite
+from .models import Enroll, Event, Category, Feature, Favorite, Review
 
 
 class EventCreateUpdateForm(forms.ModelForm):
@@ -95,5 +95,28 @@ class EventAddToFavoriteForm(forms.ModelForm):
 
         if Favorite.objects.filter(user=cleaned_data['user'], event=cleaned_data['event']).exists():
             raise forms.ValidationError(f'Событие уже добавлено в избранное')
+
+        return cleaned_data
+
+
+class ReviewForm(forms.ModelForm):
+    CHOICES = ((1, 1), (2, 2), (3, 3), (4, 4), (5, 5))
+    rate = forms.ChoiceField(label='Рейтинг', choices=CHOICES)
+
+    class Meta:
+        model = Review
+        fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['user'].widget = forms.HiddenInput()
+        self.fields['event'].widget = forms.HiddenInput()
+        self.fields['rate'].widget.attrs.update({'class': 'form-select'})
+        self.fields['text'].widget.attrs.update({'class': 'form-control', 'rows': '3'})
+
+    def clean(self):
+        cleaned_data = super().clean()
+        if Review.objects.filter(user=cleaned_data['user'], event=cleaned_data['event']).exists():
+            raise forms.ValidationError(f'Вы уже оставили отзыв на это событие')
 
         return cleaned_data
