@@ -4,6 +4,8 @@ from sentry_sdk.integrations.django import DjangoIntegration
 
 DEBUG = False
 
+STATIC_ROOT = BASE_DIR / 'static'
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -14,6 +16,8 @@ DATABASES = {
         'PORT': '',
     }
 }
+
+ALLOWED_HOSTS = ['34.88.143.158', 'localhost']
 
 sentry_sdk.init(
     dsn=os.environ.get("DSN_TOKEN"),
